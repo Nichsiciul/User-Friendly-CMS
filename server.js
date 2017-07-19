@@ -1,70 +1,115 @@
 const express = require('express');
 const fs = require('fs');
-const sqlite = require('sql.js');
-
-const filebuffer = fs.readFileSync('db/usda-nnd.sqlite3');
-
-const db = new sqlite.Database(filebuffer);
-
+var mongo = require('mongodb');
+const MongoClient = mongo.MongoClient;
+const bodyParser  = require('body-parser');
 const app = express();
 
-app.set('port', (process.env.PORT || 3001));
+let db;
 
+app.set('port', (process.env.PORT || 3001));
+app.use(bodyParser.json());
 // Express only serves static assets in production
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 }
 
-const COLUMNS = [
-  'carbohydrate_g',
-  'protein_g',
-  'fa_sat_g',
-  'fa_mono_g',
-  'fa_poly_g',
-  'kcal',
-  'description',
-];
-app.get('/api/food', (req, res) => {
-  const param = req.query.q;
-
-  if (!param) {
-    res.json({
-      error: 'Missing required parameter `q`',
+MongoClient.connect('mongodb://user1:database1@ds157112.mlab.com:57112/licenta-2017', (err, database) => {
+    if (err) return console.log(err);
+    db = database;
+    app.listen(app.get('port'), () => {
+        console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
     });
-    return;
-  }
+});
 
-  // WARNING: Not for production use! The following statement
-  // is not protected against SQL injections.
-  const r = db.exec(`
-    select ${COLUMNS.join(', ')} from entries
-    where description like '%${param}%'
-    limit 100
-  `);
+app.post('/api/login', (req, res) => {
+    db.collection('users').find({ username: req.body.username }).limit(1).toArray((err, results) => {
+        if (err) return console.log(err);
 
-  if (r[0]) {
-    res.json(
-      r[0].values.map((entry) => {
-        const e = {};
-        COLUMNS.forEach((c, idx) => {
-          // combine fat columns
-          if (c.match(/^fa_/)) {
-            e.fat_g = e.fat_g || 0.0;
-            e.fat_g = (
-              parseFloat(e.fat_g, 10) + parseFloat(entry[idx], 10)
-            ).toFixed(2);
-          } else {
-            e[c] = entry[idx];
-          }
+        var isAuthenticated = results.length > 0 && req.body.password == results[0].password;
+
+        res.send({
+            authentication: isAuthenticated
         });
-        return e;
-      })
-    );
-  } else {
-    res.json([]);
-  }
+    });
 });
 
-app.listen(app.get('port'), () => {
-  console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
+app.get('/api/header', (req, res) => {
+    db.collection('configurations').find({ type: "header" }).limit(1).toArray((err, result) => {
+       if (err) return console.log(err);
+
+       res.send(result[0]);
+
+    });
 });
+
+app.put('/api/header', (req, res) => {
+    var requestData = req.body;
+    requestData.type = "header";
+    db.collection('configurations').update({ type: "header" }, requestData, {multi:false}, (err, result) => {
+        if (err) {
+            res.send({success: false});
+            console.log(err);
+            return false;
+        }
+
+
+        res.send({success: true});
+    });
+});
+
+app.get('/api/general', (req, res) => {
+    db.collection('configurations').find({ type: "general" }).limit(1).toArray((err, result) => {
+        if (err) return console.log(err);
+
+        res.send(result[0]);
+    });
+});
+
+app.put('/api/general', (req, res) => {
+    var requestData = req.body;
+    requestData.type = "general";
+    db.collection('configurations').update({ type: "general" }, requestData, {multi:false}, (err, result) => {
+        if (err) {
+            res.send({success: false});
+            console.log(err);
+            return false;
+        }
+
+        res.send({success: true});
+    });
+});
+
+app.get('/api/components', (req, res) => {
+    db.collection('configurations').find({ component: true }).toArray((err, result) => {
+        if (err) return console.log(err);
+
+        res.send(result);
+    });
+});
+
+app.put('/api/components', (req, res) => {
+    var requestData = req.body;
+    requestData.component = true;
+    db.collection('configurations').update({ _id: mongo.ObjectId(requestData.unique) }, requestData, {multi:false}, (err, result) => {
+        if (err) {
+            res.send({success: false});
+            console.log(err);
+            return false;
+        }
+
+        res.send({success: true});
+    });
+});
+
+app.delete('/api/components', (req, res) => {
+
+    db.collection('configurations').remove({_id: mongo.ObjectId(req.query.id)}).then((err, result) => {
+        console.log(err, result);
+    });
+
+    //res.send(req);
+});
+
+
+

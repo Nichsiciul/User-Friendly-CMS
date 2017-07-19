@@ -1,0 +1,181 @@
+section {
+    padding: 100px 50px;
+    margin-bottom: 50px;
+    background-color: #3672cc;
+}
+
+.content1{
+    padding: 0 50px;
+}
+
+.react-logo {
+    animation: App-logo-spin infinite 20s linear;
+    height: 140px;
+}
+
+.express-logo{
+    height: 50px;
+}
+
+.mongo-logo{
+    height: 70px;
+}
+
+.distance {
+    margin-bottom: 20px;
+}
+
+.color-white{
+    color: #f0f0f0;
+}
+
+.img-container{
+    text-align: center;
+}
+
+@keyframes App-logo-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@media(min-width:1200px) {
+    .no-gutter .col-lg-4 {
+        width: 25%;
+    }
+}
+
+.section-heading {
+    margin-top: 0;
+}
+
+.service-box {
+    margin: 50px auto 0;
+    max-width: 400px;
+}
+
+@media(min-width:992px) {
+    .service-box {
+        margin: 20px auto 0;
+    }
+}
+
+.service-box p {
+    margin-bottom: 0;
+}
+
+.portfolio-box {
+    display: block;
+    position: relative;
+    margin: 0 auto;
+    max-width: 650px;
+}
+
+.portfolio-box .portfolio-box-caption {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: #fff;
+    opacity: 0;
+    background: rgba(240,95,64,.9);
+    -webkit-transition: all .35s;
+    -moz-transition: all .35s;
+    transition: all .35s;
+}
+
+.portfolio-box .portfolio-box-caption .portfolio-box-caption-content {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    text-align: center;
+    transform: translateY(-50%);
+}
+
+.portfolio-box .portfolio-box-caption .portfolio-box-caption-content .project-category,
+.portfolio-box .portfolio-box-caption .portfolio-box-caption-content .project-name {
+    padding: 0 15px;
+    font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;
+}
+
+.portfolio-box .portfolio-box-caption .portfolio-box-caption-content .project-category {
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.portfolio-box .portfolio-box-caption .portfolio-box-caption-content .project-name {
+    font-size: 18px;
+}
+
+.portfolio-box:hover .portfolio-box-caption {
+    opacity: 1;
+}
+
+@media(min-width:768px) {
+    .portfolio-box .portfolio-box-caption .portfolio-box-caption-content .project-category {
+        font-size: 16px;
+    }
+
+    .portfolio-box .portfolio-box-caption .portfolio-box-caption-content .project-name {
+        font-size: 22px;
+    }
+}
+
+.call-to-action h2 {
+    margin: 0 auto 20px;
+}
+
+.no-gutter > [class*=col-] {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.btn-default {
+    border-color: #fff;
+    color: #222;
+    background-color: #fff;
+    -webkit-transition: all .35s;
+    -moz-transition: all .35s;
+    transition: all .35s;
+}
+
+.btn-default:hover,
+.btn-default:focus,
+.btn-default.focus,
+.btn-default:active,
+.btn-default.active,
+.open > .dropdown-toggle.btn-default {
+    border-color: #ededed;
+    color: #222;
+    background-color: #f2f2f2;
+}
+
+.btn-default:active,
+.btn-default.active,
+.open > .dropdown-toggle.btn-default {
+    background-image: none;
+}
+
+.btn-default.disabled,
+.btn-default[disabled],
+fieldset[disabled] .btn-default,
+.btn-default.disabled:hover,
+.btn-default[disabled]:hover,
+fieldset[disabled] .btn-default:hover,
+.btn-default.disabled:focus,
+.btn-default[disabled]:focus,
+fieldset[disabled] .btn-default:focus,
+.btn-default.disabled.focus,
+.btn-default[disabled].focus,
+fieldset[disabled] .btn-default.focus,
+.btn-default.disabled:active,
+.btn-default[disabled]:active,
+fieldset[disabled] .btn-default:active,
+.btn-default.disabled.active,
+.btn-default[disabled].active,
+fieldset[disabled] .btn-default.active {
+    border-color: #fff;
+    background-color: #fff;
+}

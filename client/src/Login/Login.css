@@ -1,0 +1,16 @@
+.login, .logout{
+    background-color: #f0f0f0;
+}
+
+@media (min-width: 768px){
+    .login form, .logout form {
+        float: right;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        margin-right: 10px;
+    }
+
+    .login, .logout {
+        height: 44px;
+    }
+}
